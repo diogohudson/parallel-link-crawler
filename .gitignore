@@ -1,0 +1,9 @@
+__pycache__/
+
+# Environments
+.env
+.venv
+venv
+
+
+**/.DS_Store
