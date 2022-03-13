@@ -1,0 +1,25 @@
+repos:
+  - repo: https://github.com/psf/black
+    rev: 21.7b0
+    hooks:
+      - id: black
+        files: ^api/app/
+        args: [--config, api/app/pyproject.toml]
+        exclude: ^(.*\b(migrations)\b.*$|.*\b(apps.py)\b.*$)
+  - repo: https://github.com/pycqa/isort
+    rev: 5.10.1
+    hooks:
+      - id: isort
+        name: isort (python)
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.0.0
+    hooks:
+      - id: flake8
+        files: ^api/app/
+        args: [--config, api/app/.flake8]
+        exclude: ^(.*\b(migrations)\b.*$|.*\b(settings)\b.*$)
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.3
+    hooks:
+    - id: bandit
+      args: [-v, -r, -n 3, -lll, -iii]

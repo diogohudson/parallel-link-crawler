@@ -27,5 +27,3 @@ configure_devel: ## One line initial developer configuration
 	python3 -m venv venv;
 	bash -c "source venv/bin/activate && pip install -r requirements/base.txt && pip install -r requirements/develop.txt";
 	pre-commit install
-
-
