@@ -14,9 +14,7 @@ def main(max_workers: int, url_to_crawl: str) -> None:
     """
     start_date_time = datetime.now()
 
-    if not check_procedures(
-        url_to_crawl=url_to_crawl, max_workers=max_workers
-    ):
+    if not check_procedures(url_to_crawl=url_to_crawl, max_workers=max_workers):
         exit(-1)
 
     total_crawled_links = init_crawler(url_to_crawl, max_workers=max_workers)
@@ -29,19 +27,20 @@ def main(max_workers: int, url_to_crawl: str) -> None:
         max_workers=max_workers,
         total_crawled_links=total_crawled_links,
     )
-    
+
     exit()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     import getopt
     import sys
- 
+
     argumentList = sys.argv[1:]
     options = "n:"
     long_options = ["workers"]
 
-    arguments, values = getopt.getopt(argumentList, options, long_options) 
-    
+    arguments, values = getopt.getopt(argumentList, options, long_options)
+
     for currentArgument, currentValue in arguments:
         if currentArgument in ("-n", "--workers"):
             max_workers = currentValue
@@ -57,4 +56,3 @@ if __name__ == '__main__':
         exit(-1)
 
     main(max_workers=int(max_workers), url_to_crawl=str(url_to_crawl))
-

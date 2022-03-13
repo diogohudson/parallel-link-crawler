@@ -1,4 +1,3 @@
-
 import multiprocessing
 import threading
 from concurrent.futures import ThreadPoolExecutor as Pool
@@ -21,7 +20,7 @@ def init_crawler(link: str, max_workers: int = None) -> None:
         link (str): The url to start the crawler.
         max_workers (int): The maximum number of workers.
     """
-    
+
     manager = multiprocessing.Manager()
     internal_urls = manager.list()
 
@@ -29,9 +28,12 @@ def init_crawler(link: str, max_workers: int = None) -> None:
 
     return len(internal_urls)
 
-def crawl(link:str, internal_urls: ListProxy, initial_url:str , max_workers:int) -> None:
+
+def crawl(
+    link: str, internal_urls: ListProxy, initial_url: str, max_workers: int
+) -> None:
     """
-    Crawls a specific url, extracts all links inside that page and store them 
+    Crawls a specific url, extracts all links inside that page and store them
     in a shared memory list, controled as a `set` to avoid duplicates.
 
     This function, is kind wildy, since it is a recursive function that
@@ -42,7 +44,7 @@ def crawl(link:str, internal_urls: ListProxy, initial_url:str , max_workers:int)
     params:
         link (str): The url to get links from
         internal_urls (ListProxy): A shared memory listing to store the urls.
-        initial_url (string): The initial url used to crawl.        
+        initial_url (string): The initial url used to crawl.
     """
     print(link)
     if links := get_all_links_by_url(internal_urls, link=link, initial_url=initial_url):
@@ -50,12 +52,18 @@ def crawl(link:str, internal_urls: ListProxy, initial_url:str , max_workers:int)
         current_max_workers = max_workers - active_workers
         if current_max_workers > 0:
             with Pool(max_workers=current_max_workers) as pool:
-                pool.map(crawl, links, repeat(internal_urls), repeat(initial_url), repeat(max_workers))
+                pool.map(
+                    crawl,
+                    links,
+                    repeat(internal_urls),
+                    repeat(initial_url),
+                    repeat(max_workers),
+                )
 
 
 def get_all_links_by_url(internal_urls, link: str, initial_url: str) -> set:
     """Get all the links from a website.
-    
+
     Args:
         internal_urls (ListProxy): A shared memory listing to store the urls.
         initial_url (string): The initial url used to crawl.
@@ -64,22 +72,32 @@ def get_all_links_by_url(internal_urls, link: str, initial_url: str) -> set:
     Returns:
         list (set): A set of all the links found on the url.
     """
-    try: 
+    try:
 
-        response = requests.get(link, allow_redirects=True, headers=get_random_header(original_url=initial_url))
+        response = requests.get(
+            link,
+            allow_redirects=True,
+            headers=get_random_header(original_url=initial_url),
+        )
         if response.ok:
-            soup = BeautifulSoup(response.content, "html.parser", from_encoding="iso-8859-1",)
+            soup = BeautifulSoup(
+                response.content,
+                "html.parser",
+                from_encoding="iso-8859-1",
+            )
             return get_valid_urls_from_a_tags(soup, internal_urls, initial_url)
 
         else:
             return []
 
     except requests.exceptions.ConnectionError:
-        #ignore connection errors, what would prevent execution.
+        # ignore connection errors, what would prevent execution.
         pass
 
 
-def get_valid_urls_from_a_tags(soup: BeautifulSoup, internal_urls: ListProxy, initial_url: str) -> set:
+def get_valid_urls_from_a_tags(
+    soup: BeautifulSoup, internal_urls: ListProxy, initial_url: str
+) -> set:
     """Find all the urls from a BeautifulSoup object.
 
     Args:
@@ -93,44 +111,43 @@ def get_valid_urls_from_a_tags(soup: BeautifulSoup, internal_urls: ListProxy, in
     """
     new_urls_set = set()
 
-    
     for a_tag in soup.findAll("a"):
         href = a_tag.attrs.get("href")
 
         if href == "" or href is None:
-            continue        
+            continue
 
-        href = urljoin(initial_url, href)            
+        href = urljoin(initial_url, href)
 
         parsed_href = urlparse(href)
 
         # Remove GET parameters, URL fragments, etc.
-        href = f'{parsed_href.scheme}://{parsed_href.netloc}{parsed_href.path}'        
+        href = f"{parsed_href.scheme}://{parsed_href.netloc}{parsed_href.path}"
 
         if not _internal_validation(href, internal_urls, initial_url):
             continue
-        
+
         new_urls_set.add(href)
-        
+
         # get shared memory list, as a set()
         internal_urls_set = set(internal_urls[:])
-         
+
         # add new url
         internal_urls_set.add(href)
 
         # store in shared memory the set() as a list()
         internal_urls[:] = internal_urls_set
     return new_urls_set
-    
 
-def _internal_validation(href:str, internal_urls: ListProxy, initial_url: str) -> bool:
+
+def _internal_validation(href: str, internal_urls: ListProxy, initial_url: str) -> bool:
     """Make commom validations to decide if a url is valid or not.
     Example:
         -   It the URL is not within the same initial url domain, we should
             return False, to avoid traversing domains.
 
     Args:
-        href (str): 
+        href (str):
                     The url used on validations.
         internal_urls (ListProxy)
                      A shared memory listing to use in validations.

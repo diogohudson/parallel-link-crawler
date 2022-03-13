@@ -1,0 +1,15 @@
+    [tool.black]
+    py36 = true
+    include = '\.pyi?$'
+    exclude = '''
+    /(
+        git
+      | venv
+      | .venv
+      | requirements
+      | .vscode
+    )/
+    '''
+[tool.isort]
+  profile = "black"
+  multi_line_output = 3

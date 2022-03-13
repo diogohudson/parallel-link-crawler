@@ -12,13 +12,14 @@ def is_valid_link(url: str) -> bool:
 
     Returns:
         bool: True if the link is valid, False otherwise.
-    """        
+    """
     parsed = urlparse(url)
-    return parsed.scheme in ('http', 'https')
+    return parsed.scheme in ("http", "https")
+
 
 def check_procedures(url_to_crawl: str, max_workers: int) -> bool:
     """
-        - Checks and validations before starting the crawler. 
+        - Checks and validations before starting the crawler.
         - Print validations and useful information to guide user.
 
     Args:
@@ -35,14 +36,16 @@ def check_procedures(url_to_crawl: str, max_workers: int) -> bool:
     is_free_to_go = True
 
     if not validators.url(url_to_crawl):
-        print(' [+] [ERROR] The supplied url is not a valid URL. URL validation spec: https://gist.github.com/dperini/729294')
-        print(' [+] [+] Supplied value: {}'.format(url_to_crawl))
+        print(
+            " [+] [ERROR] The supplied url is not a valid URL. URL validation spec: https://gist.github.com/dperini/729294"
+        )
+        print(" [+] [+] Supplied value: {}".format(url_to_crawl))
         is_free_to_go = False
     else:
-        print('      ✅ URL is valid')
+        print("      ✅ URL is valid")
 
     if is_free_to_go:
-        print(f'      ✅ As requested, {max_workers} workers could be used.')
+        print(f"      ✅ As requested, {max_workers} workers could be used.")
     else:
         print("🚨 Please fix above errors and try again")
 
