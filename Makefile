@@ -34,4 +34,3 @@ configure_production: ## Install really basic dependencies forrunning processe l
 	fi;
 	python3 -m venv venv;
 	bash -c "source venv/bin/activate && pip install -r requirements/base.txt";
-	pre-commit install

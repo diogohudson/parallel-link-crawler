@@ -56,6 +56,17 @@ Examples:
 
 ## TODO
 
-    - Unit test to assert values received and returned by the functions.
-    - Better memory handling/sharing, since the approach used here lies on GIL lack of performance.
-    - Scaling to the stars: Implement this on a docker environment, moving memory management to a central Mem Cache software (e.g Redis), would allow scalating to a large number of concurrent kubernetes pods, each of them with n internal process running. (e.g 100 process, inside a docker container that is scaled up to 1000 Kubernetes Pods, would lead to 100K simultaneous requests).
+- Unit test to assert values received and returned by the functions.
+- Better memory handling/sharing, since the approach used here lies on GIL lack of performance.
+- Scaling to the stars: Implement this on a docker environment, moving memory management to a central Mem Cache software (e.g Redis), would allow scalating to a large number of concurrent kubernetes pods, each of them with n internal process running. (e.g 100 process, inside a docker container that is scaled up to 1000 Kubernetes Pods, would lead to 100K simultaneous requests).
+
+## So, do you wanna contribute to this?
+
+- GNU make is required.
+- pre-commit is required.
+
+ Start by running:
+
+  ```shell
+ make configure_remote_devel
+ ```  
