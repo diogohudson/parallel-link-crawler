@@ -2,9 +2,7 @@
 import multiprocessing
 import threading
 from concurrent.futures import ThreadPoolExecutor as Pool
-from concurrent.futures import thread
 from itertools import repeat
-from multiprocessing import shared_memory
 from multiprocessing.managers import ListProxy
 from urllib.parse import urljoin, urlparse
 

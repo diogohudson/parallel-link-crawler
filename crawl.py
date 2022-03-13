@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import sys
-from argparse import ArgumentParser
 from datetime import datetime
 
 from crawler import init_crawler
