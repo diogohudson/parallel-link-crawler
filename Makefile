@@ -20,10 +20,18 @@ help: ## Show this help message
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 	@echo "${BLUE}###########################################################################################################################${RESET}"
 
-configure_devel: ## One line initial developer configuration
+configure_remote_devel: ## If using git for developing, this is mandatory.
 	if [ -d "venv" ]; then \
 		rm -rf venv; \
     fi;
 	python3 -m venv venv;
-	bash -c "source venv/bin/activate && pip install -r requirements/base.txt && pip install -r requirements/develop.txt";
+	bash -c "source venv/bin/activate && pip install -r requirements/base.txt && pip install -r requirements/dev.txt";
+	pre-commit install
+
+configure_production: ## Install really basic dependencies forrunning processe locally.
+	if [ -d "venv" ]; then \
+		rm -rf venv; \
+	fi;
+	python3 -m venv venv;
+	bash -c "source venv/bin/activate && pip install -r requirements/base.txt";
 	pre-commit install

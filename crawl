@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+import getopt
 import sys
 from datetime import datetime
 
@@ -28,13 +28,12 @@ def main(max_workers: int, url_to_crawl: str) -> None:
         total_crawled_links=total_crawled_links,
     )
 
-    exit()
+    exit(0)
 
 
 if __name__ == "__main__":
-    import getopt
-    import sys
-
+    has_workers_argument = False
+    max_workers = 1
     argumentList = sys.argv[1:]
     options = "n:"
     long_options = ["workers"]
@@ -43,14 +42,12 @@ if __name__ == "__main__":
 
     for currentArgument, currentValue in arguments:
         if currentArgument in ("-n", "--workers"):
+            has_workers_argument = True
             max_workers = currentValue
 
-    if not max_workers:
-        print("Please provide the number of workers")
-        exit(-1)
-
     try:
-        url_to_crawl = sys.argv[3]
+        url_to_crawl = sys.argv[3] if has_workers_argument else sys.argv[1]
+
     except IndexError:
         print("Please provide the url to crawl")
         exit(-1)

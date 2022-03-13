@@ -35,10 +35,14 @@ def end_process_analytics(
     """
     total_time_elapsed = (end_date_time - start_date_time).total_seconds()
 
+    termwidth, fillchar = 78, '='
+    print('/n/n')
+    print(' WHAT WE DID HERE? '.center(termwidth, fillchar))
     print("🌐 Intial crawled URL: {}".format(url_to_crawl))
-    print("🔗 Crawled a total if {} links.".format(total_crawled_links))
-    print("⏱️ The whole proccess took {}s.".format(total_time_elapsed))
-    print("⚙️ {} workers did this great Job..".format(max_workers))
+    print("🔗 Crawled a total of {} links.".format(total_crawled_links))
+    print("⏱️  The whole proccess took {}s.".format(total_time_elapsed))
+    print("⚙️  {} workers were considered to handle this great kob.".format(max_workers))
+    print(''.center(termwidth, fillchar))
 
 
 def get_random_header(original_url: str) -> dict:
