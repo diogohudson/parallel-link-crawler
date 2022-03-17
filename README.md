@@ -16,6 +16,13 @@ This project has three dependencies that must be installed before you can run th
   ```shell
  make configure_production
  ```
+ 
+ Activate the virtual environment with:
+
+  ```shell
+    source venv/bin/activate
+```
+
 
 ### Install requirements manually
 
