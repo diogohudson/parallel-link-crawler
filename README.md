@@ -3,7 +3,7 @@
 
 # Parallel Link Crawler
 
- A command line script that you can call with a url and it will begin crawling all links on that website and printing out every link it finds to stdout, preventing traverse to another domaind different from the original.
+ A command line script that you can call with a url and it will begin crawling all links on that website and printing out every link it finds to stdout, preventing traverse to another domain different from the original.
 
 ## Prepare Environment
 
